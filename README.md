@@ -39,7 +39,7 @@ Tray icon status dot: **green** = ready, **red** = recording, **amber** = proces
 
 - Windows 10 or 11
 - Python 3.11+
-- Yandex Cloud service account key **or** OpenAI API key
+- OpenAI API key (or Yandex Cloud service account key for Yandex engine)
 
 ### Installation
 
@@ -72,13 +72,13 @@ Copy `.env.example` to `.env` and set the values:
 | Variable | Default | Description |
 |---|---|---|
 | `HOTKEY` | `right ctrl` | Push-to-talk key (any name accepted by the `keyboard` library) |
-| `STT_ENGINE` | `yandex` | Active engine: `yandex` or `openai` |
-| `LANGUAGE` | `ru-RU` | BCP-47 language code for recognition |
+| `STT_ENGINE` | `openai` | Active engine: `openai` or `yandex` |
+| `LANGUAGE` | `en-US` | BCP-47 language code for recognition |
 | `SAMPLE_RATE` | `16000` | Microphone sample rate in Hz |
 | `MICROPHONE_INDEX` | *(empty)* | Sounddevice device index — empty uses system default |
 | `HISTORY_SIZE` | `20` | Maximum items kept in the tray history submenu |
 | `SA_KEY_PATH` | `sa-key.json` | Path to Yandex service account authorized key (JSON) |
-| `OPENAI_API_KEY` | *(empty)* | OpenAI API key (required when `STT_ENGINE=openai`) |
+| `OPENAI_API_KEY` | *(empty)* | OpenAI API key (required for default `openai` engine) |
 
 **Hotkey examples:** `right ctrl`, `f9`, `scroll lock`, `pause`, `insert`
 

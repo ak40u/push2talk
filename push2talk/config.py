@@ -19,7 +19,7 @@ _sa_raw = os.getenv("SA_KEY_PATH", "sa-key.json")
 SA_KEY_PATH = _sa_raw if os.path.isabs(_sa_raw) else os.path.join(_BASE_DIR, _sa_raw)
 HOTKEY = os.getenv("HOTKEY", "right ctrl")
 SAMPLE_RATE = int(os.getenv("SAMPLE_RATE", "16000"))
-LANGUAGE = os.getenv("LANGUAGE", "ru-RU")
+LANGUAGE = os.getenv("LANGUAGE", "en-US")
 
 # Microphone device index (empty = system default)
 _mic_raw = os.getenv("MICROPHONE_INDEX", "")
@@ -32,7 +32,7 @@ HISTORY_SIZE = int(os.getenv("HISTORY_SIZE", "20"))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # Default STT engine: "yandex" or "openai"
-STT_ENGINE = os.getenv("STT_ENGINE", "yandex")
+STT_ENGINE = os.getenv("STT_ENGINE", "openai")
 
 
 def validate() -> list[str]:
