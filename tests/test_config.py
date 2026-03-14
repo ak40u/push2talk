@@ -20,7 +20,7 @@ def test_default_sample_rate():
 def test_default_language():
     import push2talk.config as cfg
 
-    assert os.getenv("LANGUAGE", "ru-RU") == cfg.LANGUAGE
+    assert os.getenv("LANGUAGE", "en-US") == cfg.LANGUAGE
 
 
 def test_default_history_size():
