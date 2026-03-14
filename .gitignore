@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+
+# Distribution
+dist/
+build/
+
+# Environment & secrets
+.env*
+!.env.example
+sa-key.json
+
+# Logs
+push2talk.log
+push2talk.log.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Tools
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Project
+plans/**/*
+!plans/templates/*
+release-manifest.json
+
+# AI tooling
+.claude/
+.opencode/
+CLAUDE.md
+.repomixignore
+.coverage
+
+# OS
+.DS_Store
+Thumbs.db

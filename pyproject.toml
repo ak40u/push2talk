@@ -1,0 +1,52 @@
+[project]
+name = "push2talk"
+version = "1.0.0"
+description = "Push-to-talk speech recognition for Windows"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "sounddevice>=0.4.6",
+    "numpy>=1.24.0",
+    "requests>=2.31.0",
+    "keyboard>=0.13.5",
+    "pystray>=0.19.5",
+    "Pillow>=10.0.0",
+    "pyperclip>=1.8.2",
+    "python-dotenv>=1.0.0",
+    "PyJWT>=2.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.8",
+    "mypy>=1.13",
+]
+
+[project.scripts]
+push2talk = "push2talk.main:main"
+
+[tool.setuptools.packages.find]
+include = ["push2talk*"]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
