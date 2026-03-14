@@ -84,4 +84,5 @@ def _recognize_chunk(
         timeout=60,
     )
     response.raise_for_status()
-    return response.text.strip()
+    result: str = response.text.strip()
+    return result

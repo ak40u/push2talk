@@ -53,7 +53,7 @@ def test_single_chunk_sends_correct_headers():
     assert call_kwargs["headers"]["Authorization"] == "Bearer my-iam-token"
     assert call_kwargs["params"]["lang"] == "ru-RU"
     assert call_kwargs["params"]["format"] == "lpcm"
-    assert call_kwargs["params"]["sampleRateHertz"] == 16000
+    assert call_kwargs["params"]["sampleRateHertz"] == "16000"
 
 
 def test_multi_chunk_splits_and_joins():

@@ -56,7 +56,7 @@ class AudioRecorder:
         self.device = device  # None = system default
         self._recording = False
         self._frames: list[np.ndarray] = []
-        self._stream = None
+        self._stream: sd.InputStream | None = None
         self._lock = threading.Lock()
 
     def _audio_callback(

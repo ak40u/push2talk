@@ -62,10 +62,11 @@ def _recognize_rest(
         params={
             "lang": lang,
             "format": "lpcm",
-            "sampleRateHertz": sample_rate,
+            "sampleRateHertz": str(sample_rate),
         },
         data=audio_data,
         timeout=30,
     )
     response.raise_for_status()
-    return response.json().get("result", "")
+    result: str = response.json().get("result", "")
+    return result

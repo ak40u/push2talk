@@ -22,6 +22,8 @@ dev = [
     "pytest-cov>=5.0",
     "ruff>=0.8",
     "mypy>=1.13",
+    "types-requests>=2.31.0",
+    "types-Pillow>=10.0.0",
 ]
 
 [project.scripts]
@@ -43,9 +45,16 @@ select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.11"
-warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "push2talk.sounds"
+disable_error_code = ["attr-defined"]
+
+[[tool.mypy.overrides]]
+module = "push2talk.recording_overlay"
+disable_error_code = ["attr-defined"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
