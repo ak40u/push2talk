@@ -97,7 +97,9 @@ class Push2Talk:
             engine = self._stt_engine  # snapshot before thread
             play_stop_sound()
             threading.Thread(
-                target=self._process_audio, args=(audio_data, engine), daemon=True,
+                target=self._process_audio,
+                args=(audio_data, engine),
+                daemon=True,
             ).start()
 
     def _process_audio(self, audio_data: bytes, engine: str) -> None:
@@ -106,19 +108,29 @@ class Push2Talk:
             if not audio_data:
                 log.warning("No audio data captured")
                 return
-            log.info("Audio: %d bytes (%.1fs) [%s]", len(audio_data),
-                     len(audio_data) / SAMPLE_RATE / 2, engine)
+            log.info(
+                "Audio: %d bytes (%.1fs) [%s]",
+                len(audio_data),
+                len(audio_data) / SAMPLE_RATE / 2,
+                engine,
+            )
 
             if engine == "openai":
                 text = recognize_openai(
-                    audio_data, OPENAI_API_KEY, LANGUAGE, SAMPLE_RATE,
+                    audio_data,
+                    OPENAI_API_KEY,
+                    LANGUAGE,
+                    SAMPLE_RATE,
                 )
             else:
                 if self._auth is None:
                     self._auth = YandexIAMAuth(SA_KEY_PATH)
                 iam_token = self._auth.get_token()
                 text = yandex_recognize(
-                    audio_data, iam_token, LANGUAGE, SAMPLE_RATE,
+                    audio_data,
+                    iam_token,
+                    LANGUAGE,
+                    SAMPLE_RATE,
                 )
             log.info("Recognized %d chars", len(text))
             if text:
@@ -145,14 +157,18 @@ class Push2Talk:
 
     def _make_mic_handler(self, device_index: int | None):
         """Closure factory for mic selection menu items."""
+
         def handler(icon: pystray.Icon, item: pystray.MenuItem) -> None:
             self._select_microphone(device_index)
+
         return handler
 
     def _make_mic_checker(self, device_index: int):
         """Closure factory for mic checkmark (avoids loop variable capture)."""
+
         def checker(item: pystray.MenuItem) -> bool:
             return self._active_mic == device_index
+
         return checker
 
     def _make_engine_handler(self, engine_key: str):
@@ -167,11 +183,13 @@ class Push2Talk:
             self._stt_engine = engine_key
             self._rebuild_menu()
             log.info("STT engine switched to: %s", ENGINES[engine_key])
+
         return handler
 
     def _make_engine_checker(self, engine_key: str):
         def checker(item: pystray.MenuItem) -> bool:
             return self._stt_engine == engine_key
+
         return checker
 
     def _quit(self, icon: pystray.Icon, item: pystray.MenuItem) -> None:
@@ -186,16 +204,17 @@ class Push2Talk:
         history_items = []
         for text in self.history.get_items():
             display = text[:50] + "..." if len(text) > 50 else text
-            history_items.append(
-                pystray.MenuItem(display, self._make_copy_handler(text))
-            )
+            history_items.append(pystray.MenuItem(display, self._make_copy_handler(text)))
         if history_items:
             history_entry = pystray.MenuItem(
-                "History", pystray.Menu(*history_items),
+                "History",
+                pystray.Menu(*history_items),
             )
         else:
             history_entry = pystray.MenuItem(
-                "History (empty)", None, enabled=False,
+                "History (empty)",
+                None,
+                enabled=False,
             )
 
         # Microphone selector submenu
@@ -259,9 +278,12 @@ class Push2Talk:
     @staticmethod
     def _make_copy_handler(text: str):
         """Closure factory to avoid loop variable capture bug."""
+
         def handler(icon: pystray.Icon, item: pystray.MenuItem) -> None:
             import pyperclip
+
             pyperclip.copy(text)
+
         return handler
 
     # --- Main entry ---

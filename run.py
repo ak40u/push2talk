@@ -11,6 +11,7 @@ log = logging.getLogger("push2talk")
 
 def run():
     from push2talk.main import main
+
     try:
         main()
     except Exception:

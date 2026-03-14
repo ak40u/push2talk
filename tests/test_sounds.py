@@ -82,6 +82,7 @@ def test_play_start_sound_is_nonblocking(mock_winsound):
     class FakeThread:
         def __init__(self, target=None, daemon=None):
             self._target = target
+
         def start(self):
             started.append(True)
             # Do NOT call self._target() — verifies non-blocking

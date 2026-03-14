@@ -28,7 +28,7 @@ def recognize_chunked(
     offset = 0
     chunk_num = 0
     while offset < len(audio_data):
-        chunk = audio_data[offset:offset + chunk_size]
+        chunk = audio_data[offset : offset + chunk_size]
         chunk_num += 1
         log.info("%s chunk %d (%.1fs)...", engine_name, chunk_num, len(chunk) / sample_rate / 2)
         try:

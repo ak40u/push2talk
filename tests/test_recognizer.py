@@ -14,18 +14,21 @@ def _make_response(result: str, status: int = 200):
     mock.raise_for_status = MagicMock()
     if status >= 400:
         from requests import HTTPError
+
         mock.raise_for_status.side_effect = HTTPError(response=mock)
     return mock
 
 
 def test_empty_audio_returns_empty_string():
     from push2talk.recognizer import recognize
+
     result = recognize(b"", "token")
     assert result == ""
 
 
 def test_single_chunk_recognize():
     from push2talk.recognizer import recognize
+
     audio = b"\x00\x01" * 100  # well under chunk size
     expected = "hello world"
 
@@ -39,6 +42,7 @@ def test_single_chunk_recognize():
 
 def test_single_chunk_sends_correct_headers():
     from push2talk.recognizer import recognize
+
     audio = b"\x00" * 100
 
     with patch("push2talk.recognizer.requests.post") as mock_post:
@@ -54,6 +58,7 @@ def test_single_chunk_sends_correct_headers():
 
 def test_multi_chunk_splits_and_joins():
     from push2talk.recognizer import CHUNK_BYTES, recognize
+
     # 1.5 chunks worth of data → 2 chunks (1 full + 1 partial)
     audio = b"\x00" * (CHUNK_BYTES + CHUNK_BYTES // 2)
 

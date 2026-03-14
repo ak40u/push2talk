@@ -46,8 +46,9 @@ def create_icon_image(color: str, size: int = 64) -> Image.Image:
     dot_r = size // 6
     margin = 2
     draw.ellipse(
-        [size - dot_r * 2 - margin, size - dot_r * 2 - margin,
-         size - margin, size - margin],
-        fill=color, outline="#1a1a2e", width=max(1, size // 32),
+        [size - dot_r * 2 - margin, size - dot_r * 2 - margin, size - margin, size - margin],
+        fill=color,
+        outline="#1a1a2e",
+        width=max(1, size // 32),
     )
     return img

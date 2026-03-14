@@ -12,6 +12,7 @@ import pytest
 # Stub out Windows-only / hardware modules before any push2talk import
 # ---------------------------------------------------------------------------
 
+
 def _make_stub(name: str) -> types.ModuleType:
     mod = types.ModuleType(name)
     return mod
@@ -27,39 +28,39 @@ if "winsound" not in sys.modules:
 if "sounddevice" not in sys.modules:
     sd = _make_stub("sounddevice")
     sd.query_hostapis = MagicMock(return_value=[])  # type: ignore[attr-defined]
-    sd.query_devices = MagicMock(return_value=[])   # type: ignore[attr-defined]
-    sd.InputStream = MagicMock()                    # type: ignore[attr-defined]
-    sd.CallbackFlags = MagicMock()                  # type: ignore[attr-defined]
+    sd.query_devices = MagicMock(return_value=[])  # type: ignore[attr-defined]
+    sd.InputStream = MagicMock()  # type: ignore[attr-defined]
+    sd.CallbackFlags = MagicMock()  # type: ignore[attr-defined]
     sys.modules["sounddevice"] = sd
 
 # keyboard stub
 if "keyboard" not in sys.modules:
     kb = _make_stub("keyboard")
-    kb.send = MagicMock()          # type: ignore[attr-defined]
-    kb.add_hotkey = MagicMock()    # type: ignore[attr-defined]
-    kb.remove_hotkey = MagicMock() # type: ignore[attr-defined]
+    kb.send = MagicMock()  # type: ignore[attr-defined]
+    kb.add_hotkey = MagicMock()  # type: ignore[attr-defined]
+    kb.remove_hotkey = MagicMock()  # type: ignore[attr-defined]
     sys.modules["keyboard"] = kb
 
 # pyperclip stub
 if "pyperclip" not in sys.modules:
     pc = _make_stub("pyperclip")
-    pc.copy = MagicMock()   # type: ignore[attr-defined]
+    pc.copy = MagicMock()  # type: ignore[attr-defined]
     pc.paste = MagicMock(return_value="")  # type: ignore[attr-defined]
     sys.modules["pyperclip"] = pc
 
 # pystray stub (used by tray/app at import time)
 if "pystray" not in sys.modules:
     pt = _make_stub("pystray")
-    pt.Icon = MagicMock()        # type: ignore[attr-defined]
-    pt.Menu = MagicMock()        # type: ignore[attr-defined]
-    pt.MenuItem = MagicMock()    # type: ignore[attr-defined]
+    pt.Icon = MagicMock()  # type: ignore[attr-defined]
+    pt.Menu = MagicMock()  # type: ignore[attr-defined]
+    pt.MenuItem = MagicMock()  # type: ignore[attr-defined]
     sys.modules["pystray"] = pt
 
 # tkinter stub (recording_overlay uses it; not available in headless CI)
 if "tkinter" not in sys.modules:
     _tk = _make_stub("tkinter")
-    _tk.Tk = MagicMock()        # type: ignore[attr-defined]
-    _tk.Canvas = MagicMock()    # type: ignore[attr-defined]
+    _tk.Tk = MagicMock()  # type: ignore[attr-defined]
+    _tk.Canvas = MagicMock()  # type: ignore[attr-defined]
     sys.modules["tkinter"] = _tk
 
 # PIL / Pillow stub
@@ -81,6 +82,7 @@ if "PIL.ImageDraw" not in sys.modules:
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def mock_sounddevice():

@@ -39,12 +39,14 @@ def list_input_devices() -> list[dict[str, Any]]:
         # Skip virtual/non-mic entries
         if any(ex in d["name"].lower() for ex in _EXCLUDED):
             continue
-        result.append({
-            "index": i,
-            "name": d["name"],
-            "channels": d["max_input_channels"],
-            "default_sr": d["default_samplerate"],
-        })
+        result.append(
+            {
+                "index": i,
+                "name": d["name"],
+                "channels": d["max_input_channels"],
+                "default_sr": d["default_samplerate"],
+            }
+        )
     return result
 
 
@@ -58,7 +60,11 @@ class AudioRecorder:
         self._lock = threading.Lock()
 
     def _audio_callback(
-        self, indata: np.ndarray, frame_count: int, time_info: Any, status: sd.CallbackFlags,
+        self,
+        indata: np.ndarray,
+        frame_count: int,
+        time_info: Any,
+        status: sd.CallbackFlags,
     ) -> None:
         """Called by sounddevice for each audio block."""
         if self._recording:

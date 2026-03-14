@@ -29,12 +29,14 @@ def _make_stream_mock():
 
 def test_is_recording_initial_false():
     from push2talk.recorder import AudioRecorder
+
     r = AudioRecorder()
     assert r.is_recording is False
 
 
 def test_start_sets_recording_true():
     from push2talk.recorder import AudioRecorder
+
     sd = sys.modules["sounddevice"]
     stream_mock = _make_stream_mock()
     sd.InputStream.return_value = stream_mock
@@ -46,6 +48,7 @@ def test_start_sets_recording_true():
 
 def test_stop_sets_recording_false():
     from push2talk.recorder import AudioRecorder
+
     sd = sys.modules["sounddevice"]
     stream_mock = _make_stream_mock()
     sd.InputStream.return_value = stream_mock
@@ -58,6 +61,7 @@ def test_stop_sets_recording_false():
 
 def test_stop_calls_stream_stop_and_close():
     from push2talk.recorder import AudioRecorder
+
     sd = sys.modules["sounddevice"]
     stream_mock = _make_stream_mock()
     sd.InputStream.return_value = stream_mock
@@ -71,6 +75,7 @@ def test_stop_calls_stream_stop_and_close():
 
 def test_empty_recording_returns_empty_bytes():
     from push2talk.recorder import AudioRecorder
+
     sd = sys.modules["sounddevice"]
     stream_mock = _make_stream_mock()
     sd.InputStream.return_value = stream_mock
@@ -83,6 +88,7 @@ def test_empty_recording_returns_empty_bytes():
 
 def test_audio_callback_appends_frames():
     from push2talk.recorder import AudioRecorder
+
     sd = sys.modules["sounddevice"]
     stream_mock = _make_stream_mock()
     sd.InputStream.return_value = stream_mock
@@ -101,6 +107,7 @@ def test_audio_callback_appends_frames():
 
 def test_audio_callback_ignored_when_not_recording():
     from push2talk.recorder import AudioRecorder
+
     r = AudioRecorder()
     # Not recording — callback should be a no-op
     frame = np.array([[100]], dtype=np.int16)
@@ -110,6 +117,7 @@ def test_audio_callback_ignored_when_not_recording():
 
 def test_start_uses_correct_params():
     from push2talk.recorder import AudioRecorder
+
     sd = sys.modules["sounddevice"]
     stream_mock = _make_stream_mock()
     sd.InputStream.return_value = stream_mock
@@ -127,6 +135,7 @@ def test_start_uses_correct_params():
 def test_list_input_devices_no_wasapi():
     """With no WASAPI host API, all input devices are returned."""
     from push2talk.recorder import list_input_devices
+
     sd = sys.modules["sounddevice"]
     sd.query_hostapis.return_value = [{"name": "MME"}]
     sd.query_devices.return_value = [
@@ -141,6 +150,7 @@ def test_list_input_devices_no_wasapi():
 def test_list_input_devices_wasapi_filters_non_wasapi():
     """With WASAPI available, only WASAPI devices are returned."""
     from push2talk.recorder import list_input_devices
+
     sd = sys.modules["sounddevice"]
     sd.query_hostapis.return_value = [
         {"name": "MME"},
@@ -158,6 +168,7 @@ def test_list_input_devices_wasapi_filters_non_wasapi():
 def test_list_input_devices_excludes_virtual():
     """Stereo mix and similar virtual devices are excluded."""
     from push2talk.recorder import list_input_devices
+
     sd = sys.modules["sounddevice"]
     sd.query_hostapis.return_value = [{"name": "MME"}]
     sd.query_devices.return_value = [
@@ -171,6 +182,7 @@ def test_list_input_devices_excludes_virtual():
 
 def test_list_input_devices_result_structure():
     from push2talk.recorder import list_input_devices
+
     sd = sys.modules["sounddevice"]
     sd.query_hostapis.return_value = [{"name": "MME"}]
     sd.query_devices.return_value = [

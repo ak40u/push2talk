@@ -20,7 +20,11 @@ def _get_startup_folder() -> str:
     """Return path to Windows Startup folder."""
     return os.path.join(
         os.environ["APPDATA"],
-        "Microsoft", "Windows", "Start Menu", "Programs", "Startup",
+        "Microsoft",
+        "Windows",
+        "Start Menu",
+        "Programs",
+        "Startup",
     )
 
 

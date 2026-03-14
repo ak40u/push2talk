@@ -15,7 +15,7 @@ import requests
 
 IAM_TOKEN_URL = "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 TOKEN_LIFETIME = 3600  # request 1h token
-REFRESH_MARGIN = 300   # refresh 5min before expiry
+REFRESH_MARGIN = 300  # refresh 5min before expiry
 
 
 class YandexIAMAuth:

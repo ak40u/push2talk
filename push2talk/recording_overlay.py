@@ -82,12 +82,17 @@ class RecordingOverlay:
         hwnd = ctypes.windll.user32.GetParent(root.winfo_id())
         style = ctypes.windll.user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
         ctypes.windll.user32.SetWindowLongW(
-            hwnd, GWL_EXSTYLE, style | WS_EX_LAYERED | WS_EX_TRANSPARENT,
+            hwnd,
+            GWL_EXSTYLE,
+            style | WS_EX_LAYERED | WS_EX_TRANSPARENT,
         )
 
         self._canvas = tk.Canvas(
-            root, width=_WIDTH, height=_HEIGHT,
-            bg=_TRANSPARENT, highlightthickness=0,
+            root,
+            width=_WIDTH,
+            height=_HEIGHT,
+            bg=_TRANSPARENT,
+            highlightthickness=0,
         )
         self._canvas.pack()
         root.withdraw()
@@ -162,28 +167,33 @@ class RecordingOverlay:
             g = int(67 * fade + 26 * (1 - fade))
             b = int(54 * fade + 46 * (1 - fade))
             c.create_oval(
-                dot_cx - ring_r, cy - ring_r,
-                dot_cx + ring_r, cy + ring_r,
-                outline=f"#{r:02x}{g:02x}{b:02x}", width=2,
+                dot_cx - ring_r,
+                cy - ring_r,
+                dot_cx + ring_r,
+                cy + ring_r,
+                outline=f"#{r:02x}{g:02x}{b:02x}",
+                width=2,
             )
 
         # Pulsing red dot
         pulse = 1.0 + 0.25 * math.sin(phase * 2.5)
         dr = int(8 * pulse)
         c.create_oval(
-            dot_cx - dr, cy - dr, dot_cx + dr, cy + dr,
-            fill=_RED, outline="",
+            dot_cx - dr,
+            cy - dr,
+            dot_cx + dr,
+            cy + dr,
+            fill=_RED,
+            outline="",
         )
 
-        c.create_text(68, cy, text="REC", fill=_RED,
-                       font=("Segoe UI", 13, "bold"), anchor="w")
+        c.create_text(68, cy, text="REC", fill=_RED, font=("Segoe UI", 13, "bold"), anchor="w")
 
         # Sound wave bars
         for i in range(5):
             bar_h = 4 + 12 * abs(math.sin(phase * 1.6 + i * 0.9))
             bx = 120 + i * 12
-            c.create_rectangle(bx, cy - bar_h, bx + 5, cy + bar_h,
-                               fill=_RED, outline="")
+            c.create_rectangle(bx, cy - bar_h, bx + 5, cy + bar_h, fill=_RED, outline="")
 
     # --- Processing animation (spinning dots + text) ---
 
@@ -207,20 +217,52 @@ class RecordingOverlay:
             b_val = int(7 * fade + 46 * (1 - fade))
             dot_r = 2 + 2 * fade
             c.create_oval(
-                dx - dot_r, dy - dot_r, dx + dot_r, dy + dot_r,
-                fill=f"#{r_val:02x}{g_val:02x}{b_val:02x}", outline="",
+                dx - dot_r,
+                dy - dot_r,
+                dx + dot_r,
+                dy + dot_r,
+                fill=f"#{r_val:02x}{g_val:02x}{b_val:02x}",
+                outline="",
             )
 
         # Animated ellipsis: 1-3 dots cycle
         dots = "." * (1 + self._step // 8 % 3)
-        c.create_text(68, cy, text=f"Transcribing{dots}", fill=_AMBER,
-                       font=("Segoe UI", 11, "bold"), anchor="w")
+        c.create_text(
+            68,
+            cy,
+            text=f"Transcribing{dots}",
+            fill=_AMBER,
+            font=("Segoe UI", 11, "bold"),
+            anchor="w",
+        )
+
     # --- Helpers ---
 
     def _rounded_rect(self, x1, y1, x2, y2, r, **kw):
         pts = [
-            x1 + r, y1,  x2 - r, y1,  x2, y1,  x2, y1 + r,
-            x2, y2 - r,  x2, y2,  x2 - r, y2,  x1 + r, y2,
-            x1, y2,  x1, y2 - r,  x1, y1 + r,  x1, y1,
+            x1 + r,
+            y1,
+            x2 - r,
+            y1,
+            x2,
+            y1,
+            x2,
+            y1 + r,
+            x2,
+            y2 - r,
+            x2,
+            y2,
+            x2 - r,
+            y2,
+            x1 + r,
+            y2,
+            x1,
+            y2,
+            x1,
+            y2 - r,
+            x1,
+            y1 + r,
+            x1,
+            y1,
         ]
         self._canvas.create_polygon(pts, smooth=True, **kw)

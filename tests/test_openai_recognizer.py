@@ -16,12 +16,14 @@ def _make_response(text: str, status: int = 200):
     mock.raise_for_status = MagicMock()
     if status >= 400:
         from requests import HTTPError
+
         mock.raise_for_status.side_effect = HTTPError(response=mock)
     return mock
 
 
 def test_pcm_to_wav_valid_header():
     from push2talk.openai_recognizer import _pcm_to_wav
+
     pcm = b"\x00\x01" * 1000
     wav_bytes = _pcm_to_wav(pcm, sample_rate=16000)
 
@@ -35,6 +37,7 @@ def test_pcm_to_wav_valid_header():
 
 def test_pcm_to_wav_contains_pcm_data():
     from push2talk.openai_recognizer import _pcm_to_wav
+
     pcm = bytes(range(256))
     wav_bytes = _pcm_to_wav(pcm, sample_rate=8000)
     # PCM data should be embedded after WAV header (44 bytes)
@@ -43,12 +46,14 @@ def test_pcm_to_wav_contains_pcm_data():
 
 def test_empty_audio_returns_empty_string():
     from push2talk.openai_recognizer import recognize_openai
+
     result = recognize_openai(b"", "sk-key")
     assert result == ""
 
 
 def test_single_chunk_recognize():
     from push2talk.openai_recognizer import recognize_openai
+
     audio = b"\x00\x01" * 500
     expected = "transcribed text"
 
@@ -62,6 +67,7 @@ def test_single_chunk_recognize():
 
 def test_single_chunk_sends_correct_auth():
     from push2talk.openai_recognizer import recognize_openai
+
     audio = b"\x00" * 100
 
     with patch("push2talk.openai_recognizer.requests.post") as mock_post:
@@ -75,6 +81,7 @@ def test_single_chunk_sends_correct_auth():
 def test_single_chunk_language_truncated():
     """Language is truncated to 2 chars (ru-RU -> ru)."""
     from push2talk.openai_recognizer import recognize_openai
+
     audio = b"\x00" * 100
 
     with patch("push2talk.openai_recognizer.requests.post") as mock_post:
@@ -96,8 +103,10 @@ def test_multi_chunk_splits_and_joins():
 
     responses = [_make_response("chunk one"), _make_response("chunk two")]
 
-    with patch("push2talk.openai_recognizer.MAX_WAV_BYTES", small_max), \
-         patch("push2talk.openai_recognizer.requests.post") as mock_post:
+    with (
+        patch("push2talk.openai_recognizer.MAX_WAV_BYTES", small_max),
+        patch("push2talk.openai_recognizer.requests.post") as mock_post,
+    ):
         mock_post.side_effect = responses
         result = recognize_openai(audio, "sk-key", "ru", 16000)
 
@@ -130,8 +139,10 @@ def test_multi_chunk_partial_failure_skips_chunk():
     # Audio = 1.5x small_pcm_max → two chunks
     audio = b"\x00" * (small_pcm_max + small_pcm_max // 2)
 
-    with patch("push2talk.openai_recognizer.MAX_WAV_BYTES", small_max), \
-         patch("push2talk.openai_recognizer.requests.post") as mock_post:
+    with (
+        patch("push2talk.openai_recognizer.MAX_WAV_BYTES", small_max),
+        patch("push2talk.openai_recognizer.requests.post") as mock_post,
+    ):
         mock_post.side_effect = [fail_resp, ok_resp]
         result = recognize_openai(audio, "sk-key")
 
